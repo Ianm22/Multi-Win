@@ -1,5 +1,4 @@
-
-from controller import Handler
+from Controller.controller import Handler
 import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
@@ -7,7 +6,7 @@ from gi.repository import Gtk
 
 if __name__ == '__main__':
     builder = Gtk.Builder()
-    builder.add_from_file("project.glade")
+    builder.add_from_file("View/project.glade")
 
     builder.connect_signals(Handler(builder))
     window = builder.get_object("Main_window")

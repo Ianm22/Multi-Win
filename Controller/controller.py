@@ -1,4 +1,4 @@
-from model import *
+from Model.model import *
 from pathlib import Path
 import re
 import gi
