@@ -33,9 +33,9 @@ def create_script(name_quick_access, selected_apps, dir_scripts):
         os.chmod("{}/{}.sh".format(dir_scripts, name_quick_access), 0o744)
         output = True
     
-    except:
+    except Exception as e:
         output = False
-        traceback.print_tb()
+        traceback.print_tb(e)
 
     return output
     
@@ -71,8 +71,8 @@ def create_quick_access(name_quick_access, dir_quick_access, dir_scripts):
         
         output = True
 
-    except:
+    except Exception as e:
         output = False
-        traceback.print_tb()
+        traceback.print_tb(e)
 
     return output
