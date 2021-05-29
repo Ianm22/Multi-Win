@@ -1,5 +1,6 @@
 import os
 import re
+import traceback
 
 # ------------ Functions ------------------
 # Function what creates the .desktop for execute
@@ -7,7 +8,7 @@ def create_script(name_quick_access, selected_apps, dir_scripts):
 
     try:
         try:
-            os.makedirs(dir_scripts, 0o500)
+            os.makedirs(dir_scripts, 0o700)
         except FileExistsError:
             print("The folder has already been created")
 
@@ -34,6 +35,7 @@ def create_script(name_quick_access, selected_apps, dir_scripts):
     
     except:
         output = False
+        traceback.print_tb()
 
     return output
     
@@ -44,7 +46,7 @@ def create_quick_access(name_quick_access, dir_quick_access, dir_scripts):
 
     try:
         try:
-            os.makedirs(dir_quick_access, 0o500)
+            os.makedirs(dir_quick_access, 0o700)
         except FileExistsError:
             print("The folder has already been created")
 
@@ -66,9 +68,11 @@ def create_quick_access(name_quick_access, dir_quick_access, dir_scripts):
         file.close
         print('Quick access created')
         os.chmod("{}/{}.desktop".format(dir_quick_access, name_quick_access), 0o744)
+        
         output = True
 
     except:
         output = False
+        traceback.print_tb()
 
     return output
