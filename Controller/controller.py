@@ -1,3 +1,4 @@
+from typing import Text
 from Model.model import *
 from pathlib import Path
 import re
@@ -6,7 +7,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
 # Variables
-#arrayApps = [None,None,None,None]
+
 selected_apps = {
     'app1': None,
     'app2': None,
@@ -16,20 +17,47 @@ selected_apps = {
 
 home = str(Path.home())
 
-config_dir_scripts = "/.config/multi-win/"
-dir_scripts = os.path.dirname(home + re.sub("/home/[A-Za-z]/", "",config_dir_scripts))
-
+config_dir_config = "/.config/multi-win/config/"
+config_dir_scripts = "/.config/multi-win/scripts/"
 config_dir_quick_access =  "/.local/share/applications/"
+
+# re.sub () is for if I implement a configuration window and a user wants to change their path
+dir_config = os.path.dirname(home + re.sub("/home/[A-Za-z]/", "",config_dir_config))
+dir_scripts = os.path.dirname(home + re.sub("/home/[A-Za-z]/", "",config_dir_scripts))
 dir_quick_access = os.path.dirname(home + re.sub("/home/[A-Za-z]/", "",config_dir_quick_access))
 
-# Class
-class Handler:
+# Think later if is a good idea left this or not
+class Controls:
 
     def __init__(self, builder_in):
         self.builder = builder_in
 
-    def getAppChooserDialog(self, *arg, label=str):
+    def showRemoveAppList(self):
+        for label in self.builder.get_object('listBox_removeApp'):
+            self.builder.get_object('listBox_removeApp').remove(label)
+        
+        data = getAppsList(dir_config)
+        for app in data:
+            self.builder.get_object('listBox_removeApp').add((Gtk.Label(label=app)))
+        
+        self.builder.get_object('listBox_removeApp').show_all()
+
+    def clearAll(self):
+        self.builder.get_object('lbl_newAppName').set_text('')
+        
+        for app in selected_apps:
+            selected_apps[app] = None
+
         print(selected_apps)
+        self.showRemoveAppList()
+
+class Signals:
+
+    def __init__(self, builder_in):
+        self.builder = builder_in
+        self.controls = Controls(builder_in)
+
+    def getAppChooserDialog(self, *arg, label=str):
         
         def on_response(dialog, response):
             if response == Gtk.ResponseType.OK:
@@ -99,16 +127,37 @@ class Handler:
         self.getAppChooserDialog(label=widget.get_label())
 
 
-    def createApp_btn(self, button):
-        new_app_name = self.builder.get_object('lbl_newAppName').get_text()
-        
-        output_script = create_script(new_app_name, selected_apps, dir_scripts)
-        output_QA = create_quick_access(new_app_name, dir_quick_access, dir_scripts)
+    def row_selected(self, listbox, row):
+        self.removeAppRow = row
 
-        if output_script and output_QA:
-            self.builder.get_object('lbl_output').set_text('All ok!')
+
+    def createApp_btn(self, button):
+        lbl_text = self.builder.get_object('lbl_newAppName').get_text()
+        if lbl_text != '':
+            new_app_name = self.builder.get_object('lbl_newAppName').get_text()
+            
+            output_script = create_script(new_app_name, selected_apps, dir_scripts)
+
+            if output_script:
+                output_QA = create_quick_access(new_app_name, dir_quick_access, dir_scripts)
+
+            if output_script and output_QA:
+                self.builder.get_object('lbl_output').set_text('All ok!')
+                addAppIntoList(dir_config, new_app_name, dir_quick_access, dir_scripts)
+                # Clear appList, lbl_newAppName and refresh remove list
+                self.controls.clearAll()
+            else:
+                self.builder.get_object('lbl_output').set_text('Something went wrong at the app creation!')
         else:
-            self.builder.get_object('lbl_output').set_text('Something went wrong!')
+            self.builder.get_object('lbl_output').set_text('Insert a name for the app!')
+
+
+    def removeApp_btn(self, button):
+        name_quick_access = self.removeAppRow.get_child().get_text()
+        removeApp(dir_config, name_quick_access)
+        
+        self.controls.showRemoveAppList()
+        
 
         
 
