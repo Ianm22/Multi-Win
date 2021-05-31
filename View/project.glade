@@ -1,11 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.2 -->
+<!-- Generated with glade 3.38.2 
+
+Copyright (C) 
+
+This file is part of Multi-win.
+
+Multi-win is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Multi-win is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Multi-win.  If not, see <http://www.gnu.org/licenses/>.
+
+Author: Ianm22
+
+-->
 <interface>
   <requires lib="gtk+" version="3.24"/>
-  <object class="GtkWindow" id="Main_window">
+  <!-- interface-license-type lgplv3 -->
+  <!-- interface-name Multi-win -->
+  <!-- interface-authors Ianm22 -->
+  <object class="GtkAboutDialog" id="About_window">
     <property name="can-focus">False</property>
-    <property name="title" translatable="yes">Multi-Win</property>
+    <property name="type-hint">dialog</property>
+    <property name="program-name">Multi-win</property>
+    <property name="version">1.0</property>
+    <property name="comments" translatable="yes">Combine your apps in one</property>
+    <property name="website">https://github.com/Ianm22/Multi-win</property>
+    <property name="website-label" translatable="yes">Github</property>
+    <property name="authors">Ianm22</property>
+    <property name="logo-icon-name">appointment-new</property>
+    <property name="license-type">gpl-3-0-only</property>
+    <signal name="response" handler="hide_about" swapped="no"/>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can-focus">False</property>
+            <property name="layout-style">end</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkApplicationWindow" id="Main_window">
+    <property name="can-focus">False</property>
+    <property name="window-position">center</property>
+    <property name="default-width">500</property>
+    <property name="default-height">100</property>
+    <property name="icon-name">appointment-new</property>
     <signal name="destroy" handler="onDestroy" swapped="no"/>
+    <signal name="show" handler="main_window_show" swapped="no"/>
     <child>
       <object class="GtkNotebook">
         <property name="visible">True</property>
@@ -19,13 +87,30 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="margin-top">10</property>
+                <property name="margin-bottom">10</property>
+                <property name="label" translatable="yes">App creator</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans 24"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-bottom">7</property>
                 <property name="label" translatable="yes">Select the number of apps:</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="padding">7</property>
-                <property name="position">0</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -85,7 +170,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
@@ -99,7 +184,7 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="padding">5</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
@@ -273,7 +358,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
@@ -374,7 +459,7 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes">Create app</property>
+            <property name="label" translatable="yes">Create</property>
           </object>
           <packing>
             <property name="tab-fill">False</property>
@@ -389,8 +474,9 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-top">20</property>
-                <property name="label" translatable="yes">Created apps</property>
+                <property name="margin-top">10</property>
+                <property name="margin-bottom">10</property>
+                <property name="label" translatable="yes">App remover</property>
                 <attributes>
                   <attribute name="font-desc" value="Sans 24"/>
                 </attributes>
@@ -441,7 +527,7 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes">Remove App</property>
+            <property name="label" translatable="yes">Remove</property>
           </object>
           <packing>
             <property name="position">1</property>
@@ -449,34 +535,31 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="position">2</property>
-          </packing>
+          <placeholder/>
         </child>
-        <child type="tab">
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="label" translatable="yes">About</property>
-          </object>
-          <packing>
-            <property name="position">2</property>
-            <property name="tab-fill">False</property>
-          </packing>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMenu" id="menu_title">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="menu-type-hint">normal</property>
+  </object>
+  <object class="GtkHeaderBar" id="title_bar">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="title" translatable="yes">Multi-Win</property>
+    <property name="show-close-button">True</property>
+    <child>
+      <object class="GtkMenuButton">
+        <property name="visible">True</property>
+        <property name="can-focus">True</property>
+        <property name="focus-on-click">False</property>
+        <property name="receives-default">True</property>
+        <property name="popup">menu_title</property>
+        <property name="use-popover">False</property>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>

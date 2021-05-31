@@ -4,7 +4,9 @@ import re
 import traceback
 import json
 
+# -----------------------------------------
 # ------------ Functions ------------------
+# -----------------------------------------
 # Function what creates the .desktop for execute
 def create_script(name_quick_access, selected_apps, dir_scripts):
 
@@ -55,7 +57,6 @@ def create_quick_access(name_quick_access, dir_quick_access, dir_scripts):
 
         file = open("{}/{}.desktop".format(dir_quick_access, name_quick_access),"w+")
 
-        # Maybe in the 'comment=' I'll write the app names 
         file.write(
         """[Desktop Entry]
         Encoding=UTF-8
@@ -133,8 +134,6 @@ def removeApp(dir_config, name_quick_access):
         
         for app in data[name_quick_access]:
             file_script = Path(app['dir_script'])
-            print(app['dir_script'])
-            print(app['dir_quick_access'])
             file_quick_acces = Path(app['dir_quick_access'])
             file_script.unlink()
             file_quick_acces.unlink()
@@ -143,6 +142,8 @@ def removeApp(dir_config, name_quick_access):
         
         with open('{}/AppList.json'.format(dir_config), 'w') as outfile:
             json.dump(data, outfile)
+        
+        print("Removed successfully!")
 
     except Exception as e:
         print('Something went wrong!\n')
