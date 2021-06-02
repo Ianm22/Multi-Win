@@ -1,5 +1,4 @@
 from Model.model import *
-#from main import createAboutWindow
 from pathlib import Path
 import re
 import gi
@@ -18,14 +17,16 @@ selected_apps = {
 
 home = str(Path.home())
 
+config_dir = "/.config/multi-win/"
 config_dir_config = "/.config/multi-win/config/"
 config_dir_scripts = "/.config/multi-win/scripts/"
 config_dir_quick_access =  "/.local/share/applications/"
 
-# re.sub () is for if I implement a configuration window and a user wants to change their path
-dir_config = os.path.dirname(home + re.sub("/home/[A-Za-z]/", "",config_dir_config))
-dir_scripts = os.path.dirname(home + re.sub("/home/[A-Za-z]/", "",config_dir_scripts))
-dir_quick_access = os.path.dirname(home + re.sub("/home/[A-Za-z]/", "",config_dir_quick_access))
+# re.sub () is for if I implement a configuration window and user wants to change their path
+dir_config = os.path.dirname(home + re.sub("/home/[A-Za-z]/", "", config_dir))
+dir_config_apps = os.path.dirname(home + re.sub("/home/[A-Za-z]/", "", config_dir_config))
+dir_scripts = os.path.dirname(home + re.sub("/home/[A-Za-z]/", "", config_dir_scripts))
+dir_quick_access = os.path.dirname(home + re.sub("/home/[A-Za-z]/", "", config_dir_quick_access))
 
 # -----------------------------------------
 # --------------- Controls ----------------
@@ -60,7 +61,7 @@ class Controls:
         for label in self.builder.get_object('listBox_removeApp'):
             self.builder.get_object('listBox_removeApp').remove(label)
         
-        data = getAppsList(dir_config)
+        data = getAppsList(dir_config_apps)
         for app in data:
             self.builder.get_object('listBox_removeApp').add((Gtk.Label(label=app)))
         
@@ -134,6 +135,7 @@ class Signals:
     def main_window_show(self, *args):
         self.builder.get_object('app_box_3').hide()
         self.builder.get_object('app_box_4').hide()
+        startApp(dir_scripts, dir_quick_access, dir_config_apps, dir_config)
         self.controls.showRemoveAppList()
         self.controls.createTitleBar()
         
@@ -192,7 +194,7 @@ class Signals:
                 output_QA = create_quick_access(new_app_name, dir_quick_access, dir_scripts)
             if output_script and output_QA:
                 self.builder.get_object('lbl_output').set_text('All ok!')
-                addAppIntoList(dir_config, new_app_name, dir_quick_access, dir_scripts)
+                addAppIntoList(dir_config_apps, new_app_name, dir_quick_access, dir_scripts)
                 
                 # Clear appList, lbl_newAppName and refresh remove list
                 self.controls.clearAll()
@@ -204,6 +206,6 @@ class Signals:
     # Remove the app what is selected in 'Remove' window
     def removeApp_btn(self, button):
         name_quick_access = self.removeAppRow.get_child().get_text()
-        removeApp(dir_config, name_quick_access)
+        removeApp(dir_config_apps, name_quick_access)
         
         self.controls.showRemoveAppList()

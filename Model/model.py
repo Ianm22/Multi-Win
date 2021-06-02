@@ -11,11 +11,6 @@ import json
 def create_script(name_quick_access, selected_apps, dir_scripts):
 
     try:
-        try:
-            os.makedirs(dir_scripts, 0o700)
-        except FileExistsError:
-            print("The 'script' folder has already been created")
-
         file = open("{}/{}.sh".format(dir_scripts, name_quick_access),"w+")
         file.write("#!/bin/bash\n")
 
@@ -50,11 +45,6 @@ def create_script(name_quick_access, selected_apps, dir_scripts):
 def create_quick_access(name_quick_access, dir_quick_access, dir_scripts):
 
     try:
-        try:
-            os.makedirs(dir_quick_access, 0o700)
-        except FileExistsError:
-            print("The 'Application' folder has already been created")
-
         file = open("{}/{}.desktop".format(dir_quick_access, name_quick_access),"w+")
 
         file.write(
@@ -63,6 +53,7 @@ def create_quick_access(name_quick_access, dir_quick_access, dir_scripts):
         Version=1.0
         Type=Application
         Terminal=false
+        Icon=applications-system
         Exec={}/'{}.sh'
         Name={}
         Comment=Custom app
@@ -83,16 +74,6 @@ def create_quick_access(name_quick_access, dir_quick_access, dir_scripts):
 
 # Function what adds in a .json file the name of the app and its path of the script and quick access
 def addAppIntoList(dir_config, name_quick_access, dir_quick_access, dir_scripts):
-    try:
-        os.makedirs(dir_config, 0o700)
-    except FileExistsError:
-        print("The 'config' folder has already been created\n")
-
-    if not os.path.isfile('{}/AppList.json'.format(dir_config)):
-        file = open('{}/AppList.json'.format(dir_config), "w")
-        file.write(r'{}')
-        file.close()
-
     try:
         data = {}
         with open('{}/AppList.json'.format(dir_config)) as json_file:
@@ -148,3 +129,30 @@ def removeApp(dir_config, name_quick_access):
     except Exception as e:
         print('Something went wrong!\n')
         traceback.print_exc()
+
+# Create everything you need at the beginning of the program
+def startApp(dir_scripts, dir_quick_access, dir_config_apps, dir_config):
+    try:
+        os.makedirs(dir_config, 0o700)
+    except FileExistsError:
+        print("The 'multi-win' folder has already been created")
+
+    try:
+        os.makedirs(dir_scripts, 0o700)
+    except FileExistsError:
+        print("The 'script' folder has already been created")
+
+    try:
+        os.makedirs(dir_config_apps, 0o700)
+    except FileExistsError:
+        print("The 'config' folder has already been created\n")
+    
+    try:
+        os.makedirs(dir_quick_access, 0o700)
+    except FileExistsError:
+        print("The 'Application' folder has already been created")
+
+    if not os.path.isfile('{}/AppList.json'.format(dir_config_apps)):
+        file = open('{}/AppList.json'.format(dir_config_apps), "w")
+        file.write(r'{}')
+        file.close()
