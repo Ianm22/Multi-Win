@@ -23,3 +23,7 @@ In create tab:
 2. Then select what apps you want to combine.
 3. Insert the quick access name.
 4. Click on the 'Create app' button.
+
+In remove tab:
+1. Select a quick access you have created.
+2. Click on the 'Remove' button.
