@@ -45,7 +45,7 @@ class Controls:
 
         menuitem_about = Gtk.MenuItem(label="About Multi-win")
         menuitem_about.connect("activate", self.show_about)
-        menuitem_quite = Gtk.MenuItem(label="Quite")
+        menuitem_quite = Gtk.MenuItem(label="Quit")
         menuitem_quite.connect("activate", Gtk.main_quit)
 
         self.builder.get_object("menu_title").append(menuitem_about)
