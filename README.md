@@ -1,6 +1,10 @@
 # Multi-Win
 Combine different programs in one quick access.
 It only works in Linux distros (Tested in GNOME and KDE interface).
+<p align="center">
+  <img width="395" height="403" src="./preview.png">
+</p>
+
 
 # Usage
 ## Open Multi-Win app 
